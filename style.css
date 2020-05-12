@@ -1,0 +1,143 @@
+body {
+  color: white;
+  width: 100%;
+}
+
+/* Navbar  */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  background-color: black;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+}
+
+header a {
+  text-decoration: none;
+  color: white;
+}
+
+nav ul {
+  list-style-type: none;
+}
+
+nav li {
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+#fond {
+  width: 100%;
+  height: 400px;
+  margin-top: -50%;
+}
+
+#home {
+  color: white;
+  text-decoration: none;
+  font-size: 250%;
+  margin-left: 4%;
+}
+
+#login {
+  color: white;
+  text-decoration: none;
+  font-size: 130%;
+  padding-right: 20px;
+}
+
+#logout {
+  color: white;
+  text-decoration: none;
+  font-size: 130%;
+}
+
+#register {
+  color: white;
+  text-decoration: none;
+  font-size: 130%;
+}
+
+#profil {
+  color: white;
+  text-decoration: none;
+  font-size: 130%;
+  padding-right: 20px;
+}
+
+#support {
+  color: white;
+  text-decoration: none;
+  font-size: 130%;
+  margin-left: -20%;
+}
+
+/* Article main page */
+
+#conteneur {
+  margin-left: 15%;
+  margin-right: 15%;
+  margin-top: 5%;
+}
+
+/* Page connexion  */
+
+#connexion {
+  width: 30%;
+  margin-left: 10%;
+  margin-top: 10%;
+}
+
+#connexion h2 {
+  font-size: 300%;
+}
+
+#connexion label {
+  font-size: 150%;
+}
+
+#boutonco {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#connexion a {
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+}
+
+/* Page inscription  */
+
+#insc {
+  width: 30%;
+  margin-left: 10%;
+  margin-top: 10%;
+}
+
+#insc h2 {
+  font-size: 300%;
+}
+
+#insc label {
+  font-size: 150%;
+}
+
+#boutoninsc {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#insc a {
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+}
