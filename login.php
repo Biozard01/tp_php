@@ -1,25 +1,18 @@
 <?php
-include './db.php';
-if (isset($_POST['login'])) {
-    $username = htmlspecialchars($_POST['username']);
-    $req = $pdo->prepare("SELECT id, password FROM users WHERE username = ?");
-    $req->execute(array($username));
-    $resultat = $req->fetch();
+try {
+    include './db.php';
+    $requete1 = "SELECT id, password FROM users WHERE email =  ?";
+    $query1 = $pdo->prepare($requete1);
+    $query1->execute(array($email));
+    $resultat = $requete1->fetch();
 
-    $isPasswordCorrect = password_verify($_POST['password'], $resultat['password']);
-
-    if (!$resultat) {
-        echo 'Mauvais identifiant ou mot de passe !';
-    } else {
-        if ($isPasswordCorrect) {
-            session_start();
-            $_SESSION['id'] = $resultat['id'];
-            $_SESSION['username'] = $username;
-            header("Location: profiles.php");
-        } else {
-            echo 'Mauvais identifiant ou mot de passe !';
-        }
+    if (!empty($_POST['email'] && $_POST['email'] == $resultat)) {
+        $_SESSION['IS_CONNECTED'] = true;
+        header("Location: http://localhost:8080/tp_php/profiles.php");
+        exit;
     }
+} catch (Exception $e) {
+    die('Erreur : ' . $e->getMessage());
 }
 ?>
 
@@ -35,9 +28,10 @@ if (isset($_POST['login'])) {
                     <p class="card-text">
                     <form method="post">
                         <div>
-                            <label>Username : </label>
-                            <input type="text" name="username" placeholder="Username" required>
+                            <label>Email : </label>
+                            <input type="email" name="email" placeholder="Email" required>
                         </div>
+                        <br>
                         <div>
                             <label>Mot de passe : </label>
                             <input type="password" name="password" placeholder="Mot de passe" required>

@@ -2,12 +2,16 @@
 try {
     include './db.php';
     if (isset($_POST['register'])) {
-        $nom = htmlspecialchars($_POST['nom']);
-        $prenom = htmlspecialchars($_POST['prenom']);
-        $email = htmlspecialchars($_POST['email']);
-        $pass_hache = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $req = $pdo->prepare("INSERT INTO users(nom, prenom, email, password, role, register_date) VALUES(?, ?, ?, ?, CURDATE())");
-        $req->execute(array($nom, $prenom, $email, $pass_hache, "user"));
+        $nom = htmlspecialchars(strtolower($_POST['nom']));
+        $prenom = htmlspecialchars(strtolower($_POST['prenom']));
+        $GetEmail = htmlspecialchars(strtolower(str_replace($_POST['email'], 'a', '@')));
+        $pass_hache = htmlspecialchars(password_hash($_POST['password'], PASSWORD_DEFAULT));
+        $GetIsUserAdmin = htmlspecialchars(0);
+
+        $requete1 = "INSERT INTO users(nom, prenom, email, password, isadmin) VALUES($nom, $prenom, $GetEmail, $pass_hache, $GetIsUserAdmin)";
+        $query1 = $pdo->prepare($requete1);
+        $query1->execute();
+
     }
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
@@ -28,11 +32,11 @@ try {
                     <form method="post">
                         <div>
                             <label>Nom : </label>
-                            <input type="text" name="nom" placeholder="nom" required>
+                            <input type="text" name="nom" placeholder="Nom" required>
                         </div>
                         <div>
                             <label>Prénom : </label>
-                            <input type="text" name="prenom" placeholder="prenom" required>
+                            <input type="text" name="prenom" placeholder="Prenom" required>
                         </div>
                         <div>
                             <label>Email : </label>

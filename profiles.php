@@ -1,7 +1,7 @@
 <?php
 include './db.php';
 session_start();
-if (isset($_SESSION['id']) and isset($_SESSION['username'])) {
+if (isset($_SESSION['id'])) {
     $req = $pdo->prepare('SELECT * FROM users WHERE id = ?');
     $req->execute(array($_SESSION['id']));
     $user = $req->fetch();

@@ -22,14 +22,19 @@ $pdo = new PDO(
 );
 
 try {
-    $query1 = $pdo->prepare('CREATE TABLE IF NOT EXISTS siteemploi.users (
+
+    $requete1 = "CREATE TABLE IF NOT EXISTS siteemploi.users (
         id INT NOT NULL AUTO_INCREMENT,
         nom VARCHAR(255) NOT NULL,
         prenom VARCHAR(255) NOT NULL,
-        PRIMARY KEY (id));
+        email VARCHAR(255) NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        isadmin tinyint(1) NOT NULL,
+        PRIMARY KEY (id));";
 
-        ');
+    $query1 = $pdo->prepare($requete1);
     $query1->execute();
+
 } catch (PDOException $event) {
     die('Erreur : ' . $event->getMessage());
 }

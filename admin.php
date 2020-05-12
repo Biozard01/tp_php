@@ -3,12 +3,11 @@ try {
     include './db.php';
     session_start();
     if (isset($_GET['id'])) {
-        $userid = intval($_GET['id']);
-        $req = $pdo->prepare('SELECT * FROM users WHERE id = ?');
-        $req->execute(array($userid));
+        $isUserAdmin = intval($_GET['isadmin']);
+        $req = $pdo->prepare('SELECT * FROM users WHERE isadmin = ?');
+        $req->execute(array($isUserAdmin));
         $user = $req->fetch();
-        $role = $user['role'];
-        if (isset($_SESSION['id']) and $user['id'] == $_SESSION['id'] and $role == "admin") {
+        if (isset($_SESSION['isadmin']) == "1") {
             ?>
 
         <!DOCTYPE html>
@@ -17,7 +16,7 @@ try {
             <body>
                 <?php include './nav.php';?>
                 <p>Vous avez tous les pouvoirs</p>
-                
+
             </body>
         </html>
     <?php }
