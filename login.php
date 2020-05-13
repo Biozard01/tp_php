@@ -1,16 +1,6 @@
 <?php
 try {
     include './db.php';
-    $requete1 = "SELECT id, password FROM users WHERE email =  ?";
-    $query1 = $pdo->prepare($requete1);
-    $query1->execute(array($email));
-    $resultat = $requete1->fetch();
-
-    if (!empty($_POST['email'] && $_POST['email'] == $resultat)) {
-        $_SESSION['IS_CONNECTED'] = true;
-        header("Location: http://localhost:8080/tp_php/profiles.php");
-        exit;
-    }
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
 }
@@ -36,6 +26,34 @@ try {
                             <label>Mot de passe : </label>
                             <input type="password" name="password" placeholder="Mot de passe" required>
                         </div>
+                        <?php
+try {
+    include './db.php';
+    if (isset($_POST['login'])) {
+        $GetEmail = htmlspecialchars(strtolower($_POST['email']));
+        $req = $pdo->prepare("SELECT id, passsword FROM users WHERE email = ?");
+        $req->execute(array($GetEmail));
+        $resultat = $req->fetch();
+
+        $isPasswordCorrect = password_verify($_POST['password'], $resultat['passsword']);
+
+        if (!$resultat) {
+            echo 'Mauvais identifiant ou mot de passe !';
+        } else {
+            if ($isPasswordCorrect) {
+                $_SESSION['id'] = $resultat['id'];
+                $_SESSION['GetEmail'] = $GetEmail;
+                header("http://localhost:8080/tp_php/profiles.php");
+            } else {
+                echo 'Mauvais identifiant ou mot de passe !';
+            }
+        }
+    }
+} catch (Exception $e) {
+    die('Erreur : ' . $e->getMessage());
+
+}
+?>
                         <div>
                             <input id="boutonco" type="submit" name="login" value="Se connecter">
                         </div>

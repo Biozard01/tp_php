@@ -1,3 +1,12 @@
+<?php
+try {
+    session_start();
+} catch (Exception $e) {
+    die('Erreur : ' . $e->getMessage());
+}
+
+?>
+
 <header id="header">
     <div>
         <a href="index.php" title="Lien vers l'accueil" id="home">Site Emploi</a>
@@ -5,7 +14,7 @@
             <ul>
                 <?php
 try {
-    if (isset($_SESSION['id']) and isset($_SESSION['prenom'])) {
+    if (isset($_SESSION['role'])) {
         ?>
                     <li><a href="profiles.php" id="profil">Profil</a></li>
                     <li><a href="logout.php" id="logout">Déconnexion</a></li>

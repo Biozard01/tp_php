@@ -1,7 +1,7 @@
 <?php
 try {
     include './db.php';
-    session_start();
+
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
 }

@@ -31,11 +31,11 @@ if (isset($_SESSION['id'])) {
                         <div class="card" style="width: 100%;">
                             <div class="card-body">
                                 <h2 class="card-title">Renseignements Personnels</h2>
-                                <?php if ($user['role'] == "admin") {?>
+                                <?php if ($user['rrole'] == "admin") {?>
                                     <p>Bonjour <?=$user['username']?> !</p>
                                 <?php }?>
 
-                                <?php if ($user['role'] == "user") {?>
+                                <?php if ($user['rrole'] == "user") {?>
                                     <p>hello user</p>
                                 <?php }?>
                                 <?php

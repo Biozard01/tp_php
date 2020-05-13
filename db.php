@@ -28,8 +28,8 @@ try {
         nom VARCHAR(255) NOT NULL,
         prenom VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL,
-        password VARCHAR(255) NOT NULL,
-        isadmin tinyint(1) NOT NULL,
+        passsword VARCHAR(255) NOT NULL,
+        rrole tinyint(1) NULL,
         PRIMARY KEY (id));";
 
     $query1 = $pdo->prepare($requete1);
