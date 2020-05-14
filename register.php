@@ -1,23 +1,13 @@
 <?php
 try {
-    include './db.php';
-    if (isset($_POST['register'])) {
+    if (!isset($_SESSION)) {
         session_start();
-        $nom = htmlspecialchars(strtolower($_POST['nom']));
-        $prenom = htmlspecialchars(strtolower($_POST['prenom']));
-        $GetEmail = htmlspecialchars(strtolower($_POST['email']));
-        $pass_hache = htmlspecialchars(password_hash($_POST['password'], PASSWORD_DEFAULT));
+    }
+    include './db.php';
 
-        if (isset($_POST['entreprise'])) {
-            $isEntreprise = 1;
-        } else {
-            $isEntreprise = 0;
-        }
-        $_SESSION['role'] = $isEntreprise;
-        $requete1 = "INSERT INTO users(nom, prenom, email, passsword, rrole) VALUES(?, ?, ?, ?, ?)";
-        $query1 = $pdo->prepare($requete1);
-        $query1->execute(array($nom, $prenom, $GetEmail, $pass_hache, $isEntreprise));
-        header("Location: http://localhost:8080/tp_php/login.php");
+    if (isset($_SESSION['ROLE'])) {
+        header("Location: http://localhost:8080/tp_php/profiles.php");
+        exit;
     }
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
@@ -48,20 +38,74 @@ try {
                             <label>Email : </label>
                             <input type="email" name="email" placeholder="Email" required>
                         </div>
+                        <?php
+try {
+    include './db.php';
+
+    if (isset($_POST['register'])) {
+        $nom = htmlspecialchars(strtolower($_POST['nom']));
+        $prenom = htmlspecialchars(strtolower($_POST['prenom']));
+        $GetEmail = htmlspecialchars(($_POST['email']));
+        $pass_hache = htmlspecialchars(password_hash($_POST['password'], PASSWORD_DEFAULT));
+
+        $TestEmail = $pdo->prepare("SELECT email FROM users");
+        $TestEmail->execute();
+        $result = $TestEmail->fetchAll();
+
+        foreach ($result as $cle => $valeur) {
+            $emailcut = json_encode(array_slice($result, $cle, $cle + 1));
+        }
+
+        $str = $emailcut;
+        $order = array("[", "{", "email", ":", "}", "]", '"', ',', '    ');
+        $replace = '';
+
+        $emailclean = str_replace($order, $replace, $str);
+
+        if ($emailclean != $GetEmail) {
+            if (isset($_POST['entreprise'])) {
+                $isEntreprise = 1;
+            } else {
+                $isEntreprise = 0;
+            }
+
+            $_SESSION['ROLE'] = $isEntreprise;
+            $_SESSION['NOM'] = $nom;
+            $_SESSION['PRENOM'] = $prenom;
+            $_SESSION['EMAIL'] = $GetEmail;
+            $GetEmail = htmlspecialchars(strtolower($_POST['email']));
+
+            $requete1 = "INSERT INTO users(nom, prenom, email, passsword, rrole) VALUES(?, ?, ?, ?, ?)";
+            $query1 = $pdo->prepare($requete1);
+            $query1->execute(array($nom, $prenom, $GetEmail, $pass_hache, $isEntreprise));
+
+            header("Location: http://localhost:8080/tp_php/profiles.php");
+            exit;
+        } else {
+            echo '<p>' . '* Adresse email déjà utiliser' . '</p>';
+        }
+    }
+
+} catch (Exception $e) {
+    die('Erreur : ' . $e->getMessage());
+
+}
+?>
                         <div>
                             <label>Mot de passe : </label>
                             <input type="password" name="password" placeholder="Mot de passe" required>
                         </div>
+                        <br>
                         <div>
                             <input type="checkbox" name="entreprise">
                             <label for="entreprise">Vous êtes une entreprise</label>
                         </div>
-
+                        <br>
                         <div>
                             <input id="boutoninsc" type="submit" name="register" value="S'enregistrer">
                         </div>
                     </form>
-                    <h3><a href="login.php">Vous avez déjà un compte ? <br> Connectez-vous.</a></h3>
+                    <h3><a href="./login.php">Vous avez déjà un compte ? <br> Connectez-vous.</a></h3>
                     </p>
                 </div>
             </div>

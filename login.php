@@ -1,5 +1,12 @@
 <?php
 try {
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+    if (isset($_SESSION['ROLE'])) {
+        header("Location: http://localhost:8080/tp_php/profiles.php");
+        exit;
+    }
     include './db.php';
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
@@ -29,6 +36,7 @@ try {
                         <?php
 try {
     include './db.php';
+
     if (isset($_POST['login'])) {
         $GetEmail = htmlspecialchars(strtolower($_POST['email']));
         $req = $pdo->prepare("SELECT id, passsword FROM users WHERE email = ?");
@@ -58,7 +66,7 @@ try {
                             <input id="boutonco" type="submit" name="login" value="Se connecter">
                         </div>
                     </form>
-                    <h3><a href="register.php">Pas de compte ? <br> Inscrivez-vous.</a></h3>
+                    <h3><a href="./register.php">Pas de compte ? <br> Inscrivez-vous.</a></h3>
                     </p>
                 </div>
             </div>

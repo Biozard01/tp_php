@@ -1,6 +1,8 @@
 <?php
 try {
-    session_start();
+    if (!isset($_SESSION)) {
+        session_start();
+    }
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
 }
@@ -14,15 +16,15 @@ try {
             <ul>
                 <?php
 try {
-    if (isset($_SESSION['role'])) {
+    if (isset($_SESSION['ROLE'])) {
         ?>
-                    <li><a href="profiles.php" id="profil">Profil</a></li>
-                    <li><a href="logout.php" id="logout">Déconnexion</a></li>
+                    <li><a href="./profiles.php" title="Lien vers votre profil" id="profil">Profil</a></li>
+                    <li><a href="./logout.php" title="Lien de déconnexion" id="logout">Déconnexion</a></li>
                 <?php
 } else {
         ?>
-                    <li><a href="login.php" id="login">Connexion</a></li>
-                    <li><a href="register.php" id="register">Inscription</a></li>
+                    <li><a href="./login.php" title="Lien de connexion" id="login">Connexion</a></li>
+                    <li><a href="./register.php" title="Lien vers la page d'inscription" id="register">Inscription</a></li>
                 <?php
 }
 } catch (PDOException $event) {
