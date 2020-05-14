@@ -45,20 +45,25 @@ try {
     if (isset($_POST['login'])) {
         $getemaillogin = htmlspecialchars(strtolower($_POST['email']));
 
-        $req = $pdo->prepare("SELECT id, passsword FROM users WHERE email = ?");
+        $req = $pdo->prepare("SELECT * FROM users WHERE email = ?");
         $req->execute(array($getemaillogin));
         $resultat = $req->fetch();
 
         $isPasswordCorrect = password_verify($_POST['password'], $resultat['passsword']);
 
         if (!$resultat) {
-            echo 'Mauvais identifiant ou mot de passe !';
+            $_SESSION['ERROR'] = true;
+            header("Location: http://localhost:8080/tp_php/login.php");
         } else {
             if ($isPasswordCorrect) {
+                $_SESSION['ROLE'] = $resultat['rrole'];
+                $_SESSION['NOM'] = $resultat['nom'];
+                $_SESSION['PRENOM'] = $resultat['prenom'];
+                $_SESSION['EMAIL'] = $resultat['email'];
                 header("Location: http://localhost:8080/tp_php/profiles.php");
-
             } else {
-                echo 'Mauvais identifiant ou mot de passe !';
+                $_SESSION['ERROR'] = true;
+                header("Location: http://localhost:8080/tp_php/login.php");
             }
         }
     }
