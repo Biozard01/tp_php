@@ -37,10 +37,16 @@ try {
 try {
     include './db.php';
 
+    if (isset($_SESSION['ERROR'])) {
+        echo '<p>' . '* Mauvais identifiant ou mot de passe' . '</p>';
+        unset($_SESSION['ERROR']);
+    }
+
     if (isset($_POST['login'])) {
-        $GetEmail = htmlspecialchars(strtolower($_POST['email']));
+        $getemaillogin = htmlspecialchars(strtolower($_POST['email']));
+
         $req = $pdo->prepare("SELECT id, passsword FROM users WHERE email = ?");
-        $req->execute(array($GetEmail));
+        $req->execute(array($getemaillogin));
         $resultat = $req->fetch();
 
         $isPasswordCorrect = password_verify($_POST['password'], $resultat['passsword']);
@@ -49,19 +55,20 @@ try {
             echo 'Mauvais identifiant ou mot de passe !';
         } else {
             if ($isPasswordCorrect) {
-                $_SESSION['id'] = $resultat['id'];
-                $_SESSION['GetEmail'] = $GetEmail;
-                header("http://localhost:8080/tp_php/profiles.php");
+                header("Location: http://localhost:8080/tp_php/profiles.php");
+
             } else {
                 echo 'Mauvais identifiant ou mot de passe !';
             }
         }
     }
+
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
 
 }
 ?>
+                        <br>
                         <div>
                             <input id="boutonco" type="submit" name="login" value="Se connecter">
                         </div>

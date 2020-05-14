@@ -42,7 +42,7 @@ try {
         $nom = "DOE";
         $prenom = "John";
         $email = "admin@admin.com";
-        $passsword = password_hash("admin", PASSWORD_DEFAULT);
+        $passsword = password_hash("root", PASSWORD_DEFAULT);
         $rrole = 2;
         $requete2 = "INSERT INTO siteemploi.users (nom, prenom, email, passsword, rrole) VALUES (:nom, :prenom, :email, :passsword, :rrole)";
 

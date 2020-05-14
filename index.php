@@ -1,6 +1,7 @@
 <?php
 try {
     include './db.php';
+
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
 }

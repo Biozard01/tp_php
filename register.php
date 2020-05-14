@@ -3,6 +3,7 @@ try {
     if (!isset($_SESSION)) {
         session_start();
     }
+
     include './db.php';
 
     if (isset($_SESSION['ROLE'])) {
@@ -42,6 +43,11 @@ try {
 try {
     include './db.php';
 
+    if (isset($_SESSION['ERROR'])) {
+        echo '<p>' . '* Adresse email déjà utiliser' . '</p>';
+        unset($_SESSION['ERROR']);
+    }
+
     if (isset($_POST['register'])) {
         $nom = htmlspecialchars(strtolower($_POST['nom']));
         $prenom = htmlspecialchars(strtolower($_POST['prenom']));
@@ -53,39 +59,40 @@ try {
         $result = $TestEmail->fetchAll();
 
         foreach ($result as $cle => $valeur) {
-            $emailcut = json_encode(array_slice($result, $cle, $cle + 1));
-        }
+            $emailcut = json_encode(array_slice($result, $cle, $valeur));
+            $cle++;
+            $str = $emailcut;
+            $order = array("[", "{", "email", ":", "}", "]", '"', ',', '    ');
+            $replace = '';
 
-        $str = $emailcut;
-        $order = array("[", "{", "email", ":", "}", "]", '"', ',', '    ');
-        $replace = '';
+            $emailclean = str_replace($order, $replace, $str);
 
-        $emailclean = str_replace($order, $replace, $str);
-
-        if ($emailclean != $GetEmail) {
-            if (isset($_POST['entreprise'])) {
-                $isEntreprise = 1;
-            } else {
-                $isEntreprise = 0;
+            if ($emailclean === $GetEmail) {
+                $_SESSION['ERROR'] = true;
+                header("Location: http://localhost:8080/tp_php/register.php");
+                exit;
             }
-
-            $_SESSION['ROLE'] = $isEntreprise;
-            $_SESSION['NOM'] = $nom;
-            $_SESSION['PRENOM'] = $prenom;
-            $_SESSION['EMAIL'] = $GetEmail;
-            $GetEmail = htmlspecialchars(strtolower($_POST['email']));
-
-            $requete1 = "INSERT INTO users(nom, prenom, email, passsword, rrole) VALUES(?, ?, ?, ?, ?)";
-            $query1 = $pdo->prepare($requete1);
-            $query1->execute(array($nom, $prenom, $GetEmail, $pass_hache, $isEntreprise));
-
-            header("Location: http://localhost:8080/tp_php/profiles.php");
-            exit;
-        } else {
-            echo '<p>' . '* Adresse email déjà utiliser' . '</p>';
         }
-    }
 
+        if (isset($_POST['entreprise'])) {
+            $isEntreprise = 1;
+        } else {
+            $isEntreprise = 0;
+        }
+
+        $_SESSION['ROLE'] = $isEntreprise;
+        $_SESSION['NOM'] = $nom;
+        $_SESSION['PRENOM'] = $prenom;
+        $_SESSION['EMAIL'] = $GetEmail;
+        $GetEmail = htmlspecialchars(strtolower($_POST['email']));
+
+        $requete1 = "INSERT INTO users(nom, prenom, email, passsword, rrole) VALUES(?, ?, ?, ?, ?)";
+        $query1 = $pdo->prepare($requete1);
+        $query1->execute(array($nom, $prenom, $GetEmail, $pass_hache, $isEntreprise));
+
+        header("Location: http://localhost:8080/tp_php/profiles.php");
+
+    }
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
 
