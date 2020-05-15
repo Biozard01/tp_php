@@ -50,17 +50,22 @@ try {
         $resultat = $req->fetch();
 
         $isPasswordCorrect = password_verify($_POST['password'], $resultat['passsword']);
-
+        echo $resultat['rrole'];
         if (!$resultat) {
             $_SESSION['ERROR'] = true;
             header("Location: http://localhost:8080/tp_php/login.php");
         } else {
             if ($isPasswordCorrect) {
                 $_SESSION['ROLE'] = $resultat['rrole'];
+                $_SESSION['ID'] = $resultat['id'];
                 $_SESSION['NOM'] = $resultat['nom'];
                 $_SESSION['PRENOM'] = $resultat['prenom'];
                 $_SESSION['EMAIL'] = $resultat['email'];
-                header("Location: http://localhost:8080/tp_php/profiles.php");
+                if ($_SESSION['ROLE'] != 2) {
+                    header("Location: http://localhost:8080/tp_php/profiles.php");
+                } else {
+                    header("Location: http://localhost:8080/tp_php/admin.php");
+                }
             } else {
                 $_SESSION['ERROR'] = true;
                 header("Location: http://localhost:8080/tp_php/login.php");

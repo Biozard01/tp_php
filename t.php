@@ -1,26 +1,19 @@
 <?php
 include './db.php';
+session_start();
+$_SESSION['ROLE'] = 2;
+$_SESSION['save_email'] = 'admin@swag.com';
+$_SESSION['id'] = '1';
 
-//$getemaillogin = "arthur.laforest33@gmail.com";
-$getemaillogin = "admin@admin.com";
-$password = "root";
+if (isset($_SESSION['ROLE'])) {
+    $req = $pdo->prepare('SELECT * FROM users WHERE id = ?');
+    $req->execute(array($_SESSION['id']));
+    $user = $req->fetch();
 
-$req = $pdo->prepare("SELECT id, passsword FROM users WHERE email = ?");
-$req->execute(array($getemaillogin));
-$resultat = $req->fetch();
+    if (isset($_SESSION['save_email'])) {
+        $newemail = htmlspecialchars(strtolower($_SESSION['save_email']));
 
-$isPasswordCorrect = password_verify($password, $resultat['passsword']);
-
-echo $isPasswordCorrect;
-
-echo '<br>';
-
-if (!$resultat) {
-    echo 'Mauvais identifiant ou mot de passe !';
-} else {
-    if ($isPasswordCorrect) {
-        echo 'ok';
-    } else {
-        echo 'Mauvais identifiant ou mot de passe !';
+        $req = $pdo->prepare('UPDATE users SET email = ? WHERE id = ?');
+        $req->execute(array($newemail, $user['id']));
     }
 }

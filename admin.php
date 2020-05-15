@@ -4,8 +4,7 @@ try {
         session_start();
     }
     include './db.php';
-    if (isset($_SESSION['ROLE']) && $_SESSION['ROLE'] === 2) {
-    } else {
+    if ($_SESSION['ROLE'] != 2) {
         header("Location: http://localhost:8080/tp_php/index.php");
         exit;
     }
@@ -19,6 +18,5 @@ try {
 <?php include './head.php';?>
     <body>
         <?php include './nav.php';?>
-
     </body>
 </html>

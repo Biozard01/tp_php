@@ -80,6 +80,7 @@ try {
             $isEntreprise = 0;
         }
 
+        $_SESSION['ID'] = $result['id'];
         $_SESSION['ROLE'] = $isEntreprise;
         $_SESSION['NOM'] = $nom;
         $_SESSION['PRENOM'] = $prenom;
