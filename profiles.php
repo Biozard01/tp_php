@@ -13,7 +13,7 @@ try {
         }
 
         if (isset($_POST['save_email'])) {
-            $newemail = htmlspecialchars(strtolower($_POST['newemail']));
+            $newemail = htmlspecialchars(strtolower($_POST['change_email']));
 
             $req = $pdo->prepare('SELECT * FROM users WHERE id = ?');
             $req->execute(array($_SESSION['ID']));
@@ -38,10 +38,11 @@ try {
                     exit;
                 }
 
-                $req1 = $pdo->prepare('UPDATE users SET email = ? WHERE id = ?');
-                $req1->execute(array($newemail, $user['id']));
-                $_SESSION['EMAIL'] = $newemail;
             }
+
+            $req1 = $pdo->prepare('UPDATE users SET email = ? WHERE id = ?');
+            $req1->execute(array($newemail, $user['id']));
+            $_SESSION['EMAIL'] = $newemail;
 
         }
     } else {
@@ -73,7 +74,7 @@ try {
                                     <form method="post">
                                         <div>
                                             <label>Entrer votre nouvelle adresse email : </label>
-                                            <input type="text" name="newemail" placeholder="Nouvelle email">
+                                            <input type="text" name="change_email" placeholder="Nouvel email">
                                             <br>
                                             <br>
                                             <input type="submit" name="save_email" value="Enregistrer">
