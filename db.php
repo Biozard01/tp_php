@@ -39,8 +39,8 @@ try {
     $result = $CreateAdmin->fetchAll();
 
     if ($result <= array(1)) {
-        $nom = "DOE";
-        $prenom = "John";
+        $nom = strtolower("DOE");
+        $prenom = strtolower("John");
         $email = "admin@admin.com";
         $passsword = password_hash("root", PASSWORD_DEFAULT);
         $rrole = 2;

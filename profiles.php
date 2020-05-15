@@ -4,36 +4,46 @@ try {
         session_start();
     }
     include './db.php';
+
     if (isset($_SESSION['ROLE'])) {
-        $req = $pdo->prepare('SELECT * FROM users WHERE id = ?');
-        $req->execute(array($_SESSION['ID']));
-        $user = $req->fetch();
-        if (isset($_SESSION['cancel_email'])) {
+
+        if (isset($_POST['cancel_email'])) {
             header("Location: http://localhost:8080/tp_php/profiles.php");
-            if (isset($_SESSION['save_email'])) {
-                $newemail = htmlspecialchars(strtolower($_SESSION['save_email']));
+            exit;
+        }
 
-                $TestEmail = $pdo->prepare("SELECT email FROM users");
-                $TestEmail->execute();
-                $result = $TestEmail->fetchAll();
+        if (isset($_POST['save_email'])) {
+            $newemail = htmlspecialchars(strtolower($_POST['newemail']));
 
-                foreach ($result as $cle => $valeur) {
-                    $emailcut = json_encode(array_slice($result, $cle, $valeur));
-                    $cle++;
-                    $str = $emailcut;
-                    $order = array("[", "{", "email", ":", "}", "]", '"', ',', '    ');
-                    $replace = '';
+            $req = $pdo->prepare('SELECT * FROM users WHERE id = ?');
+            $req->execute(array($_SESSION['ID']));
+            $user = $req->fetch();
 
-                    $emailclean = str_replace($order, $replace, $str);
+            $TestEmail = $pdo->prepare("SELECT email FROM users");
+            $TestEmail->execute();
+            $result = $TestEmail->fetchAll();
 
-                    if ($newemail === $GetEmail) {
-                        header("Location: http://localhost:8080/tp_php/profiles.php");
-                        exit;
-                    }
+            foreach ($result as $cle => $valeur) {
+                $emailcut = json_encode(array_slice($result, $cle, $valeur));
+                $cle++;
+                $str = $emailcut;
+                $order = array("[", "{", "email", ":", "}", "]", '"', ',', '    ');
+                $replace = '';
 
-                    $req = $pdo->prepare('UPDATE users SET email = ? WHERE id = ?');
-                    $req->execute(array($newemail, $user['ID']));
-                }}}
+                $emailclean = str_replace($order, $replace, $str);
+
+                if ($emailclean === $newemail or $newemail === '') {
+                    $_SESSION['ERROR'] = true;
+                    header("Location: http://localhost:8080/tp_php/profiles.php");
+                    exit;
+                }
+
+                $req1 = $pdo->prepare('UPDATE users SET email = ? WHERE id = ?');
+                $req1->execute(array($newemail, $user['id']));
+                $_SESSION['EMAIL'] = $newemail;
+            }
+
+        }
     } else {
         header("Location: http://localhost:8080/tp_php/login.php");
         exit;
@@ -54,6 +64,10 @@ try {
                 <div>
                     <h2>Votre Profil</h2>
                     <?php
+if (isset($_SESSION['ERROR'])) {
+    echo '<p>' . '* Adresse incorrect (déjà utiliser ou vide)' . '</p>';
+    unset($_SESSION['ERROR']);
+}
 try {
     if (isset($_POST['modify_email'])) {?>
                                     <form method="post">
