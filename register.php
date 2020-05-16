@@ -29,15 +29,15 @@ try {
                     <form method="post">
                         <div>
                             <label>Nom : </label>
-                            <input type="text" name="nom" placeholder="Nom" required>
+                            <input type="text" name="nom" placeholder="Nom" pattern="[^()/><\][\\\x22,;|éèç]+" required>
                         </div>
                         <div>
                             <label>Prénom : </label>
-                            <input type="text" name="prenom" placeholder="Prenom" required>
+                            <input type="text" name="prenom" pattern="[^()/><\][\\\x22,;|éèç]+" placeholder="Prenom" required>
                         </div>
                         <div>
                             <label>Email : </label>
-                            <input type="email" name="email" placeholder="Email" required>
+                            <input type="email" name="email" pattern="[^()/><\][\\\x22,;|éèç]+" placeholder="Email" required>
                         </div>
                         <?php
 try {

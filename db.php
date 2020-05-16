@@ -34,6 +34,16 @@ try {
     $query1 = $pdo->prepare($requete1);
     $query1->execute();
 
+    $requete2 = "CREATE TABLE IF NOT EXISTS siteemploi.offres (
+        id INT NOT NULL AUTO_INCREMENT,
+        emploi VARCHAR(255) NOT NULL,
+        salaire INT NOT NULL,
+        entreprise VARCHAR(255) NOT NULL,
+        PRIMARY KEY (id));";
+
+    $query2 = $pdo->prepare($requete2);
+    $query2->execute();
+
     $CreateAdmin = $pdo->prepare("SELECT email FROM users");
     $CreateAdmin->execute();
     $result = $CreateAdmin->fetchAll();
@@ -44,15 +54,15 @@ try {
         $email = "admin@admin.com";
         $passsword = password_hash("root", PASSWORD_DEFAULT);
         $rrole = 2;
-        $requete2 = "INSERT INTO siteemploi.users (nom, prenom, email, passsword, rrole) VALUES (:nom, :prenom, :email, :passsword, :rrole)";
+        $requete3 = "INSERT INTO siteemploi.users (nom, prenom, email, passsword, rrole) VALUES (:nom, :prenom, :email, :passsword, :rrole)";
 
-        $query2 = $pdo->prepare($requete2);
-        $query2->bindParam('nom', $nom);
-        $query2->bindParam('prenom', $prenom);
-        $query2->bindParam('email', $email);
-        $query2->bindParam('passsword', $passsword);
-        $query2->bindParam('rrole', $rrole);
-        $query2->execute();
+        $query3 = $pdo->prepare($requete3);
+        $query3->bindParam('nom', $nom);
+        $query3->bindParam('prenom', $prenom);
+        $query3->bindParam('email', $email);
+        $query3->bindParam('passsword', $passsword);
+        $query3->bindParam('rrole', $rrole);
+        $query3->execute();
 
     }
 } catch (PDOException $event) {

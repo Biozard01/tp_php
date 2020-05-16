@@ -78,6 +78,24 @@ nav li {
   top: 30px;
 }
 
+#navoffres {
+  color: black;
+  text-decoration: none;
+  font-size: 130%;
+  position: absolute;
+  right: 900px;
+  top: 30px;
+}
+
+#cvmaker {
+  color: black;
+  text-decoration: none;
+  font-size: 130%;
+  position: absolute;
+  right: 850px;
+  top: 30px;
+}
+
 /* Page connexion  */
 
 #connexion {
@@ -156,3 +174,34 @@ nav li {
   margin-bottom: 10px;
   font-size: 20px;
 }
+
+/* page offre */
+
+#offres {
+  display: inline-block;
+  background-color: white;
+  position: absolute;
+  width: 15%;
+  padding-left: 20px;
+  left: 200px;
+  top: 350px;
+  color: black;
+}
+#offresdispo {
+  margin-left: 10%;
+  margin-top: 10%;
+}
+
+#offresdispo h2 {
+  font-size: 300%;
+}
+
+#boutonoffre {
+  width: 120px;
+  height: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* page cv */

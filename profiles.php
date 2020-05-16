@@ -95,7 +95,6 @@ try {
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
 }?>
-                    </p>
                 </div>
             </div>
         </div>
