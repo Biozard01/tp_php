@@ -50,7 +50,7 @@ try {
         $resultat = $req->fetch();
 
         $isPasswordCorrect = password_verify($_POST['password'], $resultat['passsword']);
-        echo $resultat['rrole'];
+        
         if (!$resultat) {
             $_SESSION['ERROR'] = true;
             header("Location: http://localhost:8080/tp_php/login.php");
